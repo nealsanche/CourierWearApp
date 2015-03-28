@@ -1,6 +1,7 @@
 package org.nsdev.wearableapp;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -26,5 +27,9 @@ public class MyDisplayActivity extends Activity {
     public void onRootClicked(View root) {
         // Do something
         mTextView.setText("Tapped.");
+
+        Intent intent = new Intent(getApplicationContext(), ContentActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 }

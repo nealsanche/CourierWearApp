@@ -33,6 +33,11 @@
                 <action android:name="org.nsdev.wearableapp.SHOW_NOTIFICATION"/>
             </intent-filter>
         </receiver>
+
+        <activity
+            android:name=".ContentActivity"
+            android:label="@string/title_activity_content">
+        </activity>
     </application>
 
 </manifest>
