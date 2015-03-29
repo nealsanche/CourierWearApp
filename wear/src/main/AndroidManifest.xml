@@ -38,6 +38,13 @@
             android:name=".ContentActivity"
             android:label="@string/title_activity_content">
         </activity>
+
+        <service android:name=".ListenerService">
+            <intent-filter>
+                <action android:name="com.google.android.gms.wearable.BIND_LISTENER"/>
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>

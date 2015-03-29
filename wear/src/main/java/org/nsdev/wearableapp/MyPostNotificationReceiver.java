@@ -6,7 +6,6 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
 
 
 public class MyPostNotificationReceiver extends BroadcastReceiver {
@@ -27,7 +26,5 @@ public class MyPostNotificationReceiver extends BroadcastReceiver {
                                 PendingIntent.FLAG_UPDATE_CURRENT)))
                 .build();
         ((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE)).notify(0, notification);
-
-        Toast.makeText(context, context.getString(R.string.notification_posted), Toast.LENGTH_SHORT).show();
     }
 }
