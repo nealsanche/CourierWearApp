@@ -1,4 +1,4 @@
-package org.nsdev.wearableapp;
+package org.nsdev.shared;
 
 import me.denley.courier.Deliverable;
 
@@ -7,9 +7,9 @@ import me.denley.courier.Deliverable;
  */
 @Deliverable
 public class Message {
-    String mSender;
-    String mMessageText;
-    long mTimeStamp;
+    public String mSender;
+    public String mMessageText;
+    public long mTimeStamp;
 
     public Message() {
     }

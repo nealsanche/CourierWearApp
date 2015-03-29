@@ -8,6 +8,8 @@ import android.view.View;
 
 import com.google.android.gms.wearable.Node;
 
+import org.nsdev.shared.Message;
+
 import java.util.List;
 
 import me.denley.courier.Courier;

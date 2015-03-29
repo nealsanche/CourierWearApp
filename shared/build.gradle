@@ -1,11 +1,10 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 22
     buildToolsVersion "21.1.2"
 
     defaultConfig {
-        applicationId "org.nsdev.wearableapp"
         minSdkVersion 21
         targetSdkVersion 22
         versionCode 1
@@ -20,7 +19,6 @@ android {
 }
 
 dependencies {
-    wearApp project(':wear')
-    compile project(':shared')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'me.denley.courier:courier:1.0.3'
 }

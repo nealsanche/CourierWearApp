@@ -9,6 +9,8 @@ import android.view.MotionEvent;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import org.nsdev.shared.Message;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.Optional;
