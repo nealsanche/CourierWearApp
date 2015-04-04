@@ -23,4 +23,5 @@ dependencies {
     wearApp project(':wear')
     compile project(':shared')
     compile 'me.denley.courier:courier:1.0.3'
+    compile 'com.squareup.okhttp:okhttp:2.3.0'
 }

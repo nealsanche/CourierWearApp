@@ -5,15 +5,25 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 
 import com.google.android.gms.wearable.Node;
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.Headers;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.nsdev.shared.Message;
 
+import java.io.IOException;
 import java.util.List;
 
 import me.denley.courier.Courier;
 import me.denley.courier.LocalNode;
+import me.denley.courier.ReceiveMessages;
 import me.denley.courier.RemoteNodes;
 
 
@@ -23,6 +33,7 @@ public class MainActivity extends Activity {
     Node localNode;
 
     private List<Node> mConnectedNodes;
+    private EditText mServerHost;
 
     @RemoteNodes
     void onConnectionStateChanged(List<Node> connectedNodes) {
@@ -33,6 +44,8 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mServerHost = (EditText) findViewById(R.id.server);
         Courier.startReceiving(this);
     }
 
@@ -100,5 +113,70 @@ public class MainActivity extends Activity {
                 return "Don't do anything I wouldn't do.";
         }
         return "No comment.";
+    }
+
+    @ReceiveMessages("/keynote/command")
+    public void onKeynoteMessage(String message) {
+        try {
+            runCommand(message);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private final OkHttpClient client = new OkHttpClient();
+
+    public void runCommand(final String command) throws Exception {
+        Request request = new Request.Builder()
+                .get()
+                .url(String.format("http://%s/json/%s", mServerHost.getText().toString(), command))
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+
+            @Override
+            public void onFailure(Request request, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+                if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+                Headers responseHeaders = response.headers();
+                for (int i = 0; i < responseHeaders.size(); i++) {
+                    System.out.println(responseHeaders.name(i) + ": " + responseHeaders.value(i));
+                }
+
+                try {
+                    JSONObject responseJson = new JSONObject(response.body().string());
+
+                    String slide = responseJson.optString("slide");
+                    String build = responseJson.optString("build");
+
+                    Message message = new Message("Me", "Slide: " + slide + "\nBuild: " + build, System.currentTimeMillis());
+                    Courier.deliverData(MainActivity.this, "/message/data", message);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public void onPreviousButtonClicked(View view) {
+        try {
+            runCommand("previous");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void onNextButtonClicked(View view) {
+        try {
+            runCommand("next");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -56,6 +56,18 @@ public class ContentActivity extends Activity {
                     public void onLongPress(MotionEvent e) {
                         mDismissOverlayView.show();
                     }
+
+                    @Override
+                    public boolean onSingleTapConfirmed(MotionEvent e) {
+                        Courier.deliverMessage(ContentActivity.this, "/keynote/command", "next");
+                        return true;
+                    }
+
+                    @Override
+                    public boolean onDoubleTap(MotionEvent e) {
+                        Courier.deliverMessage(ContentActivity.this, "/keynote/command", "previous");
+                        return true;
+                    }
                 });
             }
         });
